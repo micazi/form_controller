@@ -1,8 +1,7 @@
 name: form_controller
-description: A new Flutter package.
-version: 0.0.1
-author:
-homepage:
+description: A simple little handler for TextEditingControllers in forms.
+version: 0.1.0
+homepage: https://github.com/micwaziz/form_controller
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

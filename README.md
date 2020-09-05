@@ -1,14 +1,53 @@
 # form_controller
 
-A new Flutter package.
+A simple little handler for TextEditingControllers in forms.
 
 ## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+### 1. Depend on it
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Add this to your package's pubspec.yaml file:
+
+```
+dependencies:
+  form_controller: [latest version]
+```
+
+### 2. Install it
+
+```
+$ flutter pub get
+```
+
+### 3. Import it
+
+```
+import 'package:form_controller/form_controller.dart';
+```
+
+## Example
+
+See the example tab.
+
+## To add
+
+() Adding simple prebuilt form validators.
+
+If you have any suggestions, visit the github repo or reach out.
+
+## Contributing
+
+Contributing is more than welcomed on any of my packages/plugins.
+I will try to keep adding suggested features as i go.
+
+## Versioning
+
+- **V0.1.0** - Initial Release.
+
+## Authors
+
+**Michael Aziz** - [Github](https://github.com/micwaziz)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
