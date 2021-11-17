@@ -1,6 +1,6 @@
 # form_controller
 
-A simple little handler for TextEditingControllers in forms.
+A controller to combine multible TextControllers and managing form satate.
 
 ## Getting Started
 
@@ -27,13 +27,42 @@ import 'package:form_controller/form_controller.dart';
 
 ## Example
 
-See the example tab.
+```
+  //* declare the controller.
+  late FormController _formController;
+  @override
+  void initState() {
+    super.initState();
+      //* initialize the controller.
+    _formController = FormController();
+  }
+  ...
 
-## To add
+  Form(
+        //* Add form key from the controller.
+        key: _formController.key,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            //* supply as many required controllers as needed from your one and only initialized controller,
+            //* and give each one a unique id so you can retrieve the value later!
+            const Text("field1"),
+            TextFormField(
+              controller: _formController.controller("val1"),
+            ),
+            const Text("field2"),
+            TextFormField(
+              controller: _formController.controller("val2"),
+            ),
 
-() Adding simple prebuilt form validators.
+  ...
 
-If you have any suggestions, visit the github repo or reach out.
+```
+
+## ToDo list
+
+[] Add Embedded form validations.
 
 ## Contributing
 
@@ -43,11 +72,12 @@ I will try to keep adding suggested features as i go.
 ## Versioning
 
 - **V0.1.0** - Initial Release.
+- **V0.5.0** - Added Null Safety, resolved some issues, and added documentations.
 
 ## Authors
 
-**Michael Aziz** - [Github](https://github.com/micwaziz)
+**Michael Aziz** - [Github](https://github.com/micazi)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details

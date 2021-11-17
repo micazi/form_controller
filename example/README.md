@@ -23,46 +23,59 @@ class Example extends StatefulWidget {
 }
 
 class _ExampleState extends State<Example> {
-  // declare
-  FormController _controller;
-
+  //* declare the controller.
+  late FormController _formController;
+  @override
   void initState() {
-    // initialize
-    _controller = FormController();
     super.initState();
+      //* initialize the controller.
+    _formController = FormController();
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Form(
-          // Add the key to your form.
-          key: _controller.key,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                // Add a controller to each field and give it a string key name. e.g 'username'
-                controller: _controller.controller("username"),
-              ),
-              TextFormField(
-                controller: _controller.controller("password"),
-
-              ),
-              RaisedButton(
-                child: Text("Do something!"),
-                onPressed: () {
-                  // check if form fields are validated
-                  if (_controller.validate()) {
-                    // get text from coontrollers by simply controller.text('key name').
-                    debugPrint(
-                        "username: ${_controller.text('username')} , pass: ${_controller.text('password')}");
-                  }
-                },
-              ),
-            ],
-          ),
+   return Scaffold(
+      body: Form(
+        //* Add form key from the controller.
+        key: _formController.key,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            //* supply as many required controllers as needed from your one and only initialized controller,
+            //* and give each one a unique id so you can retrieve the value later!
+            //*
+            const Text("field1"),
+            TextFormField(
+              controller: _formController.controller("val1"),
+            ),
+            const Text("field2"),
+            TextFormField(
+              controller: _formController.controller("val2"),
+            ),
+            const Text("field3"),
+            TextFormField(
+              controller: _formController.controller("val3"),
+            ),
+            MaterialButton(
+            //* Retrieve the controller values easily with the id.
+              onPressed: () {
+                debugPrint(
+                  "Con1: " + _formController.value("val1"),
+                );
+                debugPrint(
+                  "Con2: " + _formController.value("val2"),
+                );
+                debugPrint(
+                  "Con3: " + _formController.value("val3"),
+                );
+            //* Get access to form state functions such as validate,reset, and save!
+                _formController.reset();
+                _formController.validate();
+                _formController.save();
+              },
+              child: const Text("Get data!"),
+            ),
+          ],
         ),
       ),
     );
