@@ -1,4 +1,4 @@
-```
+```dart
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:form_controller/form_controller.dart';
@@ -29,7 +29,7 @@ class _ExampleState extends State<Example> {
   void initState() {
     super.initState();
       //* initialize the controller.
-    _formController = FormController();
+    _formController = FormController(controllers: ['val1', 'val2', 'val3']);
   }
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,8 @@ class _ExampleState extends State<Example> {
             ),
             const Text("field3"),
             TextFormField(
-              controller: _formController.controller("val3"),
+              //* Add Initial Text for Controllers. [Ignored if pre-initialized in the constructor]
+              controller: _formController.controller("val3", initialText: "Initial Text!"),
             ),
             MaterialButton(
             //* Retrieve the controller values easily with the id.
@@ -75,6 +76,20 @@ class _ExampleState extends State<Example> {
               },
               child: const Text("Get data!"),
             ),
+            MaterialButton(
+                onPressed: () {
+            //* Set controllers' values programatically!
+                  _formController.set('val2', "This is the new text!");
+                },
+                child: const Text("Set V2 data!"),
+              ),
+            //* Access a controller's value as a stream!
+            StreamBuilder<String>(
+                stream: _formController.valueStream("val1"),
+                builder: (context, snapshot) {
+                  return Text("Stream of V1: ${snapshot.data}");
+                },
+              ),
           ],
         ),
       ),
