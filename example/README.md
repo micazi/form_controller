@@ -97,4 +97,11 @@ class _ExampleState extends State<Example> {
   }
 }
 
+//* Use the dispose method to close all streaming controllers after usage!
+  @override
+  void dispose() async {
+    await _formController.dispose();
+    super.dispose();
+  }
+
 ```

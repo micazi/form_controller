@@ -98,6 +98,13 @@ import 'package:form_controller/form_controller.dart';
         ),
       ),
 
+  //* Use the dispose method to close all streaming controllers after usage!
+  @override
+  void dispose() async {
+    await _formController.dispose();
+    super.dispose();
+  }
+
 ```
 
 ## ToDo list

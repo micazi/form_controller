@@ -56,6 +56,7 @@ import 'package:flutter/material.dart';
 class FormController {
   final _formKey = GlobalKey<FormState>();
   final Map<String, TextEditingController> _textControllers = {};
+  final Map<String, StreamController<String>> _streamControllers = {};
   FormController({
     this.controllers,
   }) {
@@ -151,10 +152,12 @@ class FormController {
   Stream<String> valueStream(String id) {
     late Stream<String> _stream;
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
-      StreamController<String> controller = StreamController();
-      _stream = controller.stream;
+      _streamControllers.addEntries([MapEntry(id, StreamController())]);
+      // ignore: close_sinks
+      StreamController<String> _c = _streamControllers[id]!;
+      _stream = _c.stream;
       _textControllers[id]!.addListener(() {
-        controller.add(_textControllers[id]!.text);
+        _c.add(_textControllers[id]!.text);
       });
     } else {
       throw Exception(
@@ -214,5 +217,14 @@ class FormController {
     } else {
       throw Exception("Null Form Key State");
     }
+  }
+
+  ///
+  /// Dispose of all StreamControllers.
+  ///
+  Future<void> dispose() async {
+    _streamControllers.forEach((key, value) async {
+      await value.close();
+    });
   }
 }
