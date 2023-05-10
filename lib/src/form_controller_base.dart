@@ -56,21 +56,23 @@ import 'package:flutter/material.dart';
 class FormController {
   final _formKey = GlobalKey<FormState>();
   final Map<String, TextEditingController> _textControllers = {};
+  final Map<String, bool> _obscurity = {};
   final Map<String, StreamController<String>> _streamControllers = {};
   FormController({
     this.controllers,
   }) {
     if (controllers != null) {
-      for (var c in controllers!) {
+      for (var c in controllers!.keys) {
         _textControllers.addEntries([MapEntry(c, TextEditingController())]);
+        _obscurity.addEntries([MapEntry(c, controllers![c]!)]);
       }
     }
   }
 
   ///
-  /// Specify the controllers' ids to initialize at construction time.
+  /// Specify the controllers' ids & their obscurity state to initialize at construction time.
   ///
-  final List<String>? controllers;
+  final Map<String, bool>? controllers;
 
   /// Use this key on the Form widget to get access to save,validate, and reset functions!
   ///
@@ -99,13 +101,15 @@ class FormController {
   ///
   ///   ```
   /// {@end-tool}
-  TextEditingController controller(String id, {String? initialText}) {
+  TextEditingController controller(String id,
+      {String? initialText, bool isObscure = false}) {
     late TextEditingController ret;
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       ret = _textControllers[id]!;
     } else {
       TextEditingController newCon = TextEditingController(text: initialText);
       _textControllers.addEntries([MapEntry(id, newCon)]);
+      _obscurity.addEntries([MapEntry(id, isObscure)]);
       ret = newCon;
     }
     return ret;
@@ -134,6 +138,29 @@ class FormController {
     return ret;
   }
 
+  /// Use this function to get controller's obscurity value using the unique id you supplied earlier!
+  ///
+  ///
+  /// {@tool snippet}
+  /// ```dart
+  ///         onPressed: () {
+  ///           //* Get obscurity value
+  ///           _formController.isObscure("id1")
+  /// }
+  ///   ```
+  /// {@end-tool}
+
+  bool isObscure(String id) {
+    late bool ret;
+    if (_textControllers.containsKey(id) && _textControllers[id] != null) {
+      ret = _obscurity[id]!;
+    } else {
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+    }
+    return ret;
+  }
+
   /// Use this function to stream a text field value using the unique id you supplied earlier!
   ///
   ///
@@ -150,20 +177,20 @@ class FormController {
   ///   ```
   /// {@end-tool}
   Stream<String> valueStream(String id) {
-    late Stream<String> _stream;
+    late Stream<String> stream;
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       _streamControllers.addEntries([MapEntry(id, StreamController())]);
       // ignore: close_sinks
-      StreamController<String> _c = _streamControllers[id]!;
-      _stream = _c.stream;
+      StreamController<String> c = _streamControllers[id]!;
+      stream = c.stream;
       _textControllers[id]!.addListener(() {
-        _c.add(_textControllers[id]!.text);
+        c.add(_textControllers[id]!.text);
       });
     } else {
       throw Exception(
           "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
-    return _stream;
+    return stream;
   }
 
   /// Use this function to set a text field value using the unique id you supplied earlier!
@@ -180,6 +207,46 @@ class FormController {
   void set(String id, String text) {
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       _textControllers[id]!.text = text;
+    } else {
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+    }
+  }
+
+  /// Use this function to set controller's obscurity value using the unique id you supplied earlier!
+  ///
+  ///
+  /// {@tool snippet}
+  /// ```dart
+  ///         onPressed: () {
+  ///           //* Set controller obscurity value
+  ///           _formController.setsetObscurity("id1", true)
+  /// }
+  ///   ```
+  /// {@end-tool}
+  void setObscurity(String id, bool isObscure) {
+    if (_textControllers.containsKey(id) && _textControllers[id] != null) {
+      _obscurity[id] = isObscure;
+    } else {
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+    }
+  }
+
+  /// Use this function to toggle controller's obscurity status using the unique id you supplied earlier!
+  ///
+  ///
+  /// {@tool snippet}
+  /// ```dart
+  ///         onPressed: () {
+  ///           //* Toggle controller obscurity value
+  ///           _formController.toggleObscurity("id1")
+  /// }
+  ///   ```
+  /// {@end-tool}
+  void toggleObscurity(String id) {
+    if (_textControllers.containsKey(id) && _textControllers[id] != null) {
+      _obscurity[id] = !_obscurity[id]!;
     } else {
       throw Exception(
           "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");

@@ -94,6 +94,22 @@ import 'package:form_controller/form_controller.dart';
                   return Text("Stream of V1: ${snapshot.data}");
                 },
               ),
+                      //* Control the obscurity status of a field with ease!
+            Row(
+              children:[
+            TextFormField(
+              //* Add Initial Obscurity Status for Controllers.
+              controller: _formController.controller("val4", isObscure:true),
+            ),
+            MaterialButton(
+                onPressed: () {
+                  //* Toggle controllers' obscurity programatically with ease!!
+                  _formController.toggleObscurity('val4');
+                },
+                child: Icon(Icons.eye),
+              ),
+              ]
+            ),
           ],
         ),
       ),
@@ -112,6 +128,7 @@ import 'package:form_controller/form_controller.dart';
 [x] Add initial text.
 [x] Add Text setters.
 [x] Add text value stream.
+[x] Add obscurity state handler.
 [] Add Embedded form validations.
 
 ## Contributing
@@ -124,6 +141,7 @@ I will try to keep adding suggested features as i go.
 - **V0.1.0** - Initial Release.
 - **V0.5.0** - Added Null Safety, resolved some issues, and added documentations.
 - **V0.8.2** - Added Controller's initial text, text value stream, and text setters.
+- **V0.8.4** - Added Controller's obscurity state handler.
 
 ## Authors
 
