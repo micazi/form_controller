@@ -90,6 +90,22 @@ class _ExampleState extends State<Example> {
                   return Text("Stream of V1: ${snapshot.data}");
                 },
               ),
+            //* Control the obscurity status of a field with ease!
+            Row(
+              children:[
+            TextFormField(
+              //* Add Initial Obscurity Status for Controllers.
+              controller: _formController.controller("val4", isObscure:true),
+            ),
+            MaterialButton(
+                onPressed: () {
+                  //* Toggle controllers' obscurity programatically with ease!!
+                  _formController.toggleObscurity('val4');
+                },
+                child: Icon(Icons.eye),
+              ),
+              ]
+            ),
           ],
         ),
       ),
