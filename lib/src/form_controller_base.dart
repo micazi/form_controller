@@ -265,6 +265,27 @@ class FormController {
   }
 
   ///
+  /// Submit the current form (Validate and return values).
+  ///
+  void submit(
+      {List<bool> Function(Map<String, String>)? extraValidators,
+      Function(Map<String, String> values)? onSuccess}) {
+    Map<String, String> r = {};
+    if (_formKey.currentState != null) {
+      if (_formKey.currentState!.validate()) {
+        _textControllers.forEach((key, value) {
+          r.addEntries([MapEntry(key, value.text)]);
+        });
+        if (extraValidators == null || !extraValidators(r).contains(false)) {
+          if (onSuccess != null) onSuccess(r);
+        }
+      }
+    } else {
+      throw Exception("Null Form Key State");
+    }
+  }
+
+  ///
   /// Reset the current form state.
   ///
   void reset() {

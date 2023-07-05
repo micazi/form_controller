@@ -1,11 +1,11 @@
 name: form_controller
 description: A controller to combine multible TextControllers and managing form satate.
 
-version: 0.8.4
+version: 0.8.5
 homepage: https://github.com/micazi/form_controller
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 < 4.0.0"
 
 dependencies:
   flutter:

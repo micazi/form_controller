@@ -142,6 +142,7 @@ I will try to keep adding suggested features as i go.
 - **V0.5.0** - Added Null Safety, resolved some issues, and added documentations.
 - **V0.8.2** - Added Controller's initial text, text value stream, and text setters.
 - **V0.8.4** - Added Controller's obscurity state handler.
+- **V0.8.5** - Added Form Submit Function.
 
 ## Authors
 
