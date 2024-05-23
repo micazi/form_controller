@@ -7,3 +7,5 @@
 ## [0.8.4] - Added Controller's obscurity state handler.
 
 ## [0.8.5] - Added Form Submit Function.
+
+## [0.8.6] - Added Single field validation & updated initial text and obscurity construction.
