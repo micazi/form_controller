@@ -9,3 +9,5 @@
 ## [0.8.5] - Added Form Submit Function.
 
 ## [0.8.6] - Added Single field validation & updated initial text and obscurity construction.
+
+## [0.8.7] - Added Form Validation Templates.
