@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../form_controller.dart';
 import '../infrastructure/list.extensions.dart';
 
 /// A controller to combine multible TextControllers and managing form satate.
@@ -93,6 +94,21 @@ class FormController {
   /// {@end-tool}
   GlobalKey<FormState> get key => _formKey;
 
+  /// Use this key on the TextFormField widget to get access to validateOnly function!
+  ///
+  /// {@tool snippet}
+  ///
+  ///
+  /// ```dart
+  /// class _ExampleState extends State<Example> {
+  ///
+  ///   TextFormField(
+  ///   key: _formController.fieldStateKey('fieldId'),
+  ///   ... )
+  ///   ```
+  /// {@end-tool}
+  GlobalKey<FormFieldState>? fieldStateKey(String fieldID) => _controllersStateKeys[fieldID];
+
   /// Use this function to supply a text field with the required controller,make sure to use a unique id!
   ///
   ///
@@ -111,6 +127,7 @@ class FormController {
     } else {
       TextEditingController newCon = TextEditingController(text: initialText);
       _textControllers.addEntries([MapEntry(id, newCon)]);
+      _controllersStateKeys.addEntries([MapEntry(id, GlobalKey<FormFieldState>(debugLabel: id))]);
       _obscurity.addEntries([MapEntry(id, isObscure)]);
       ret = newCon;
     }
@@ -133,28 +150,6 @@ class FormController {
     late String ret;
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       ret = _textControllers[id]!.text;
-    } else {
-      throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
-    }
-    return ret;
-  }
-
-  /// Use this function to get controller's obscurity value using the unique id you supplied earlier!
-  ///
-  ///
-  /// {@tool snippet}
-  /// ```dart
-  ///         onPressed: () {
-  ///           //* Get obscurity value
-  ///           _formController.isObscure("id1")
-  /// }
-  ///   ```
-  /// {@end-tool}
-
-  bool isObscure(String id) {
-    late bool ret;
-    if (_textControllers.containsKey(id) && _textControllers[id] != null) {
-      ret = _obscurity[id]!;
     } else {
       throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
@@ -209,6 +204,28 @@ class FormController {
     } else {
       throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
+  }
+
+  /// Use this function to get controller's obscurity value using the unique id you supplied earlier!
+  ///
+  ///
+  /// {@tool snippet}
+  /// ```dart
+  ///         onPressed: () {
+  ///           //* Get obscurity value
+  ///           _formController.isObscure("id1")
+  /// }
+  ///   ```
+  /// {@end-tool}
+
+  bool isObscure(String id) {
+    late bool ret;
+    if (_textControllers.containsKey(id) && _textControllers[id] != null) {
+      ret = _obscurity[id]!;
+    } else {
+      throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+    }
+    return ret;
   }
 
   /// Use this function to set controller's obscurity value using the unique id you supplied earlier!
