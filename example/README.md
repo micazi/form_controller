@@ -50,12 +50,26 @@ class _ExampleState extends State<Example> {
             ),
             const Text("field2"),
             TextFormField(
+              //* Add key to take advantage of the 'ValidateOnly' Function.
+              key:_formController.fieldStateKey("val2")
+              //
               controller: _formController.controller("val2"),
             ),
             const Text("field3"),
             TextFormField(
               //* Add Initial Text for Controllers. [Ignored if pre-initialized in the constructor]
               controller: _formController.controller("val3", initialText: "Initial Text!"),
+            ),
+            const Text("field4"),
+            TextFormField(
+              controller: _formController.controller("val4"),
+              //* Add Form Validations throught the embedded validation system.
+              validator: FormControllerValidators.validate(
+                [
+                  FormControllerValidators.isRequired(),
+                  FormControllerValidators.minLength(10),
+                ],
+              ),
             ),
             MaterialButton(
             //* Retrieve the controller values easily with the id.
@@ -82,6 +96,13 @@ class _ExampleState extends State<Example> {
                   _formController.set('val2', "This is the new text!");
                 },
                 child: const Text("Set V2 data!"),
+              ),
+            MaterialButton(
+                onPressed: () {
+            //* Validate a single field
+                  _formController.validateOnly("val2");
+                },
+                child: const Text("Validate V2 data!"),
               ),
             //* Access a controller's value as a stream!
             StreamBuilder<String>(

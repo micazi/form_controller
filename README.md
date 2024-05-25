@@ -146,6 +146,7 @@ I will try to keep adding suggested features as i go.
 - **V0.8.5** - Added Form Submit Function.
 - **V0.8.6** - Added Single field validation & updated initial text and obscurity construction.
 - **V0.8.7** - Added Form Validation Templates.
+- **V0.8.8** - Added Custom Validator.
 
 ## Authors
 

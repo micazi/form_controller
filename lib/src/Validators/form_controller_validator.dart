@@ -19,6 +19,8 @@ class FormControllerValidators {
   static FormControllerValidator numbersOnly({String? message}) => NumbersOnlyFormValidator(message: message);
   static FormControllerValidator minLength(int length, {String? message}) => MinLengthFormValidator(length, message: message);
   static FormControllerValidator maxLength(int length, {String? message}) => MaxLengthFormValidator(length, message: message);
+  static FormControllerValidator custom(String validatorName, String message, List<bool> Function(String?) validations) =>
+      FormControllerValidator(name: validatorName, message: message, checks: validations);
   //
   static String? Function(String?)? validate(List<FormControllerValidator> validators) {
     return (validators.isNotEmpty)
