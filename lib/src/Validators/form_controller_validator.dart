@@ -14,15 +14,23 @@ export './max_length.validator.dart';
 
 class FormControllerValidators {
   //
-  static FormControllerValidator isRequired({String? message}) => IsRequiredFormValidator(message: message);
-  static FormControllerValidator email({String? message}) => EmailFormValidator(message: message);
-  static FormControllerValidator numbersOnly({String? message}) => NumbersOnlyFormValidator(message: message);
-  static FormControllerValidator minLength(int length, {String? message}) => MinLengthFormValidator(length, message: message);
-  static FormControllerValidator maxLength(int length, {String? message}) => MaxLengthFormValidator(length, message: message);
-  static FormControllerValidator custom(String validatorName, String message, List<bool> Function(String?) validations) =>
-      FormControllerValidator(name: validatorName, message: message, checks: validations);
+  static FormControllerValidator isRequired({String? message}) =>
+      IsRequiredFormValidator(message: message);
+  static FormControllerValidator email({String? message}) =>
+      EmailFormValidator(message: message);
+  static FormControllerValidator numbersOnly({String? message}) =>
+      NumbersOnlyFormValidator(message: message);
+  static FormControllerValidator minLength(int length, {String? message}) =>
+      MinLengthFormValidator(length, message: message);
+  static FormControllerValidator maxLength(int length, {String? message}) =>
+      MaxLengthFormValidator(length, message: message);
+  static FormControllerValidator custom(String validatorName, String message,
+          List<bool> Function(String?) validations) =>
+      FormControllerValidator(
+          name: validatorName, message: message, checks: validations);
   //
-  static String? Function(String?)? validate(List<FormControllerValidator> validators) {
+  static String? Function(String?)? validate(
+      List<FormControllerValidator> validators) {
     return (validators.isNotEmpty)
         ? (s) {
             //
@@ -35,7 +43,12 @@ class FormControllerValidators {
             //
             if (checks.containsValue(false)) {
               //s1 Has an Error!
-              return checks.entries.where((e) => e.value == false).toList().first.key.message;
+              return checks.entries
+                  .where((e) => e.value == false)
+                  .toList()
+                  .first
+                  .key
+                  .message;
             } else {
               //s1 Has no Errors!
               return null;

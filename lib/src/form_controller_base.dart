@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../form_controller.dart';
 import '../infrastructure/list.extensions.dart';
 
 /// A controller to combine multible TextControllers and managing form satate.
@@ -66,8 +65,10 @@ class FormController {
   }) {
     if (controllers != null) {
       for (var c in controllers!.keys) {
-        _textControllers.addEntries([MapEntry(c, TextEditingController(text: controllers![c]!.$1))]);
-        _controllersStateKeys.addEntries([MapEntry(c, GlobalKey<FormFieldState>(debugLabel: c))]);
+        _textControllers.addEntries(
+            [MapEntry(c, TextEditingController(text: controllers![c]!.$1))]);
+        _controllersStateKeys.addEntries(
+            [MapEntry(c, GlobalKey<FormFieldState>(debugLabel: c))]);
         _obscurity.addEntries([MapEntry(c, controllers![c]!.$2)]);
       }
     }
@@ -107,7 +108,8 @@ class FormController {
   ///   ... )
   ///   ```
   /// {@end-tool}
-  GlobalKey<FormFieldState>? fieldStateKey(String fieldID) => _controllersStateKeys[fieldID];
+  GlobalKey<FormFieldState>? fieldStateKey(String fieldID) =>
+      _controllersStateKeys[fieldID];
 
   /// Use this function to supply a text field with the required controller,make sure to use a unique id!
   ///
@@ -120,14 +122,16 @@ class FormController {
   ///
   ///   ```
   /// {@end-tool}
-  TextEditingController controller(String id, {String? initialText, bool isObscure = false}) {
+  TextEditingController controller(String id,
+      {String? initialText, bool isObscure = false}) {
     late TextEditingController ret;
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       ret = _textControllers[id]!;
     } else {
       TextEditingController newCon = TextEditingController(text: initialText);
       _textControllers.addEntries([MapEntry(id, newCon)]);
-      _controllersStateKeys.addEntries([MapEntry(id, GlobalKey<FormFieldState>(debugLabel: id))]);
+      _controllersStateKeys.addEntries(
+          [MapEntry(id, GlobalKey<FormFieldState>(debugLabel: id))]);
       _obscurity.addEntries([MapEntry(id, isObscure)]);
       ret = newCon;
     }
@@ -151,7 +155,8 @@ class FormController {
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       ret = _textControllers[id]!.text;
     } else {
-      throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
     return ret;
   }
@@ -182,7 +187,8 @@ class FormController {
         c.add(_textControllers[id]!.text);
       });
     } else {
-      throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
     return stream;
   }
@@ -202,7 +208,8 @@ class FormController {
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       _textControllers[id]!.text = text;
     } else {
-      throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
   }
 
@@ -223,7 +230,8 @@ class FormController {
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       ret = _obscurity[id]!;
     } else {
-      throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
     return ret;
   }
@@ -243,7 +251,8 @@ class FormController {
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       _obscurity[id] = isObscure;
     } else {
-      throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
   }
 
@@ -262,7 +271,8 @@ class FormController {
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       _obscurity[id] = !_obscurity[id]!;
     } else {
-      throw Exception("No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
+      throw Exception(
+          "No controllers found with the provided id, Did you create a controller with this id? Did you wait for the controller to initializ?");
     }
   }
 
@@ -282,9 +292,12 @@ class FormController {
   ///
   bool validateOnly(List<String> fieldIDs) {
     List<bool> validReturns = [];
-    if (_textControllers.isNotEmpty && _textControllers.keys.toList().containsAll(fieldIDs) && _controllersStateKeys.keys.toList().containsAll(fieldIDs)) {
+    if (_textControllers.isNotEmpty &&
+        _textControllers.keys.toList().containsAll(fieldIDs) &&
+        _controllersStateKeys.keys.toList().containsAll(fieldIDs)) {
       for (var f in fieldIDs) {
-        if (_controllersStateKeys[f] != null && _controllersStateKeys[f]!.currentState != null) {
+        if (_controllersStateKeys[f] != null &&
+            _controllersStateKeys[f]!.currentState != null) {
           validReturns.add(_controllersStateKeys[f]!.currentState!.validate());
         }
       }
@@ -297,7 +310,9 @@ class FormController {
   ///
   /// Submit the current form (Validate and return values).
   ///
-  void submit({List<bool> Function(Map<String, String>)? extraValidators, Function(Map<String, String> values)? onSuccess}) {
+  void submit(
+      {List<bool> Function(Map<String, String>)? extraValidators,
+      Function(Map<String, String> values)? onSuccess}) {
     Map<String, String> r = {};
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
