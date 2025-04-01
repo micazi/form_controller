@@ -143,6 +143,7 @@ class FormController {
       _textControllers.remove(id);
     }
     if (_controllersStateKeys.containsKey(id) && _controllersStateKeys[id] != null) {
+      _controllersStateKeys[id]!.currentState?.dispose();
       _controllersStateKeys.remove(id);
     }
 
