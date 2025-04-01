@@ -138,6 +138,22 @@ class FormController {
     return ret;
   }
 
+  void removeController(String id) {
+    if (_textControllers.containsKey(id) && _textControllers[id] != null) {
+      _textControllers.remove(id);
+    }
+    if (_controllersStateKeys.containsKey(id) && _controllersStateKeys[id] != null) {
+      _controllersStateKeys.remove(id);
+    }
+
+    if (_obscurity.containsKey(id) && _obscurity[id] != null) {
+      _obscurity.remove(id);
+    }
+    if (_streamControllers.containsKey(id) && _streamControllers[id] != null) {
+      _streamControllers.remove(id);
+    }
+  }
+
   /// Use this function to get a text field value using the unique id you supplied earlier!
   /// Will throw an error if the controller doesn't have the specified ID.
   ///
