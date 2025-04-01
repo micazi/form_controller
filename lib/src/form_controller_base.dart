@@ -139,7 +139,7 @@ class FormController {
   }
 
   /// Use this function to get a text field value using the unique id you supplied earlier!
-  ///
+  /// Will throw an error if the controller doesn't have the specified ID.
   ///
   /// {@tool snippet}
   /// ```dart
@@ -156,6 +156,26 @@ class FormController {
       ret = _textControllers[id]!.text;
     } else {
       _throwControllerNotFound(id);
+    }
+    return ret;
+  }
+
+  /// Use this function to get a text field value using the unique id you supplied earlier!
+  /// Will return null if the controller doesn't have the specified ID.
+  ///
+  /// {@tool snippet}
+  /// ```dart
+  ///         onPressed: () {
+  ///           //* Get controller value
+  ///           _formController.tryValue("id1")
+  /// }
+  ///   ```
+  /// {@end-tool}
+
+  String? tryValue(String id) {
+    String? ret;
+    if (_textControllers.containsKey(id) && _textControllers[id] != null) {
+      ret = _textControllers[id]!.text;
     }
     return ret;
   }
