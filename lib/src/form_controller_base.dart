@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import '../infrastructure/list.extensions.dart';
 
@@ -138,18 +137,28 @@ class FormController {
     return ret;
   }
 
+  /// Does the controller has a field with this ID.
+  bool hasKey(String id) => controllers.containsKey(id);
+
+  /// Does the controller has a field with this ID.
   void removeController(String id) {
+    // Remove the text controller.
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       _textControllers.remove(id);
     }
+
+    // Remove the State.
     if (_controllersStateKeys.containsKey(id) && _controllersStateKeys[id] != null) {
       _controllersStateKeys[id]!.currentState?.reset();
       _controllersStateKeys.remove(id);
     }
 
+    // Remove the obscurity variable.
     if (_obscurity.containsKey(id) && _obscurity[id] != null) {
       _obscurity.remove(id);
     }
+
+    // Remove the stream controller.
     if (_streamControllers.containsKey(id) && _streamControllers[id] != null) {
       _streamControllers.remove(id);
     }
