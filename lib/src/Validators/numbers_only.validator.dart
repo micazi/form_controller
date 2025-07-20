@@ -7,7 +7,7 @@ class NumbersOnlyFormValidator extends FormControllerValidator {
           message: message ?? "Only numbers are allowed",
           checks: (s) => (s != null && s != '')
               ? [
-                  RegExp(r'[0-9]').hasMatch(s),
+                  RegExp(r'^\d+$').hasMatch(s),
                 ]
               : [],
         );
