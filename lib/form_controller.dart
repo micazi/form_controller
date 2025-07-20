@@ -1,3 +1,3 @@
-library form_controller;
+library;
 
 export 'src/exports.dart';

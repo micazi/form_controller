@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import '../infrastructure/list.extensions.dart';
 
@@ -64,10 +63,12 @@ class FormController {
     this._initialValues,
   ) {
     if (_initialValues != null) {
-      for (var c in _initialValues!.keys) {
-        _textControllers.addEntries([MapEntry(c, TextEditingController(text: _initialValues![c]!.$1))]);
-        _controllersStateKeys.addEntries([MapEntry(c, GlobalKey<FormFieldState>(debugLabel: c))]);
-        _obscurity.addEntries([MapEntry(c, _initialValues![c]!.$2)]);
+      for (var c in _initialValues.keys) {
+        _textControllers.addEntries(
+            [MapEntry(c, TextEditingController(text: _initialValues[c]!.$1))]);
+        _controllersStateKeys.addEntries(
+            [MapEntry(c, GlobalKey<FormFieldState>(debugLabel: c))]);
+        _obscurity.addEntries([MapEntry(c, _initialValues[c]!.$2)]);
       }
     }
   }
@@ -75,12 +76,16 @@ class FormController {
   ///
   /// Specify the controllers' initial obscurity state and value to initialize at construction time.
   ///
-  final Map<String, (String initialText, bool initialObscurity)>? _initialValues;
+  final Map<String, (String initialText, bool initialObscurity)>?
+      _initialValues;
 
   ///
   /// Get access to all currently saved controllers with their current values.
   ///
-  Map<String, String> get controllers => Map.fromEntries(_textControllers.entries.map((c) => MapEntry(c.key, c.value.text)).toList());
+  Map<String, String> get controllers =>
+      Map.fromEntries(_textControllers.entries
+          .map((c) => MapEntry(c.key, c.value.text))
+          .toList());
 
   /// Use this key on the Form widget to get access to save,validate, and reset functions!
   ///
@@ -111,7 +116,8 @@ class FormController {
   ///   ... )
   ///   ```
   /// {@end-tool}
-  GlobalKey<FormFieldState>? fieldStateKey(String fieldID) => _controllersStateKeys[fieldID];
+  GlobalKey<FormFieldState>? fieldStateKey(String fieldID) =>
+      _controllersStateKeys[fieldID];
 
   /// Use this function to supply a text field with the required controller,make sure to use a unique id!
   ///
@@ -124,32 +130,45 @@ class FormController {
   ///
   ///   ```
   /// {@end-tool}
-  TextEditingController controller(String id, {String? initialText, bool isObscure = false}) {
+  TextEditingController controller(String id,
+      {String? initialText, bool isObscure = false}) {
     late TextEditingController ret;
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       ret = _textControllers[id]!;
     } else {
       TextEditingController newCon = TextEditingController(text: initialText);
       _textControllers.addEntries([MapEntry(id, newCon)]);
-      _controllersStateKeys.addEntries([MapEntry(id, GlobalKey<FormFieldState>(debugLabel: id))]);
+      _controllersStateKeys.addEntries(
+          [MapEntry(id, GlobalKey<FormFieldState>(debugLabel: id))]);
       _obscurity.addEntries([MapEntry(id, isObscure)]);
       ret = newCon;
     }
     return ret;
   }
 
+  /// Does the controller has a field with this ID.
+  bool hasKey(String id) => controllers.containsKey(id);
+
+  /// Does the controller has a field with this ID.
   void removeController(String id) {
+    // Remove the text controller.
     if (_textControllers.containsKey(id) && _textControllers[id] != null) {
       _textControllers.remove(id);
     }
-    if (_controllersStateKeys.containsKey(id) && _controllersStateKeys[id] != null) {
+
+    // Remove the State.
+    if (_controllersStateKeys.containsKey(id) &&
+        _controllersStateKeys[id] != null) {
       _controllersStateKeys[id]!.currentState?.reset();
       _controllersStateKeys.remove(id);
     }
 
+    // Remove the obscurity variable.
     if (_obscurity.containsKey(id) && _obscurity[id] != null) {
       _obscurity.remove(id);
     }
+
+    // Remove the stream controller.
     if (_streamControllers.containsKey(id) && _streamControllers[id] != null) {
       _streamControllers.remove(id);
     }
@@ -323,9 +342,12 @@ class FormController {
   ///
   bool validateOnly(List<String> fieldIDs) {
     List<bool> validReturns = [];
-    if (_textControllers.isNotEmpty && _textControllers.keys.toList().containsAll(fieldIDs) && _controllersStateKeys.keys.toList().containsAll(fieldIDs)) {
+    if (_textControllers.isNotEmpty &&
+        _textControllers.keys.toList().containsAll(fieldIDs) &&
+        _controllersStateKeys.keys.toList().containsAll(fieldIDs)) {
       for (var f in fieldIDs) {
-        if (_controllersStateKeys[f] != null && _controllersStateKeys[f]!.currentState != null) {
+        if (_controllersStateKeys[f] != null &&
+            _controllersStateKeys[f]!.currentState != null) {
           validReturns.add(_controllersStateKeys[f]!.currentState!.validate());
         }
       }
@@ -338,7 +360,9 @@ class FormController {
   ///
   /// Submit the current form (Validate and return values).
   ///
-  void submit({List<bool> Function(Map<String, String>)? extraValidators, Function(Map<String, String> values)? onSuccess}) {
+  void submit(
+      {List<bool> Function(Map<String, String>)? extraValidators,
+      Function(Map<String, String> values)? onSuccess}) {
     Map<String, String> r = {};
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
@@ -385,8 +409,9 @@ class FormController {
     });
   }
 
-  void _throwControllerNotFound(String id) =>
-      throw Exception("No controllers found with the provided id `$id`, Did you create a controller with this id? Did you wait for the controller to initializ?");
+  void _throwControllerNotFound(String id) => throw Exception(
+      "No controllers found with the provided id `$id`, Did you create a controller with this id? Did you wait for the controller to initializ?");
 
-  void _throwFormKeyNullState() => throw Exception("The form key is unmounted, Did you forget to add it to the Form widget?");
+  void _throwFormKeyNullState() => throw Exception(
+      "The form key is unmounted, Did you forget to add it to the Form widget?");
 }
